@@ -1,54 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Custom Range Input</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
-
         BODY {
             display: flex;
             justify-content: center;
             align-items: center;
 
             padding-top: 50px;
-
             background: #242124;
+
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             font-style: normal;
-            color: rgba(255, 255, 255, 0.5);
             font-weight: 500;
-            user-select: none;
+            color: rgba(255, 255, 255, 0.5);
         }
-        .container {
-            /* border: red solid 1px; */
+        .range {
             height: 18px;
             width: 400px;
             position: relative;
             user-select: none;
+            display: flex;
+            align-items: center;
         }
-        /* .undertext_container {
-            width: 400px;
-            height: 20px;
-            position: relative;
-        }
-        .undertext {
-            position: absolute;
-        } */
-        .line {
+        .range .band {
             position: absolute;
             width: 100%;
-            top: 7px;
             height: 4px;
             background: rgba(255, 255, 255, 0.25);
         }
-        .button  {
+        .range .button  {
             position: relative;
             width: 10px;
-            left: 195px;
+            left: 0;
             height: 100%;
             background: #FFFF00;
             box-shadow: 0px 0px 4px #FFFF00;
@@ -56,85 +43,70 @@
 
             display: flex;
             justify-content: center;
-            
-            
         }
-        .button_info {
+        .range .button_text {
             position: absolute;
-            top: 20px;
-            /* left: -3px; */
-            /* color: blue; */
-            
+            top: 110%;
         }
     </style>
 </head>
 <body>
     <span style="margin-right: 10px;">Younger</span>
-    <!-- MAIN RANGE -->
-    <div class="container">
-        <div class="line"></div>
+
+    <!-- RANGE START -->
+    <div class="range">
+        <div class="band"></div>
         <div class="button">
-            <span class="button_info">50</span>
-            
+            <span class="button_text">0</span>
         </div>
     </div>
+    <!-- RANGE END -->
 
     <span style="margin-left: 10px;">Older</span>
 
 
     <script>
-        var BUTTON_ACTOIN = false, x0 = -1, dX = 0, w0, b0;
-        // function MouseDown()
-        // {
-        //     BUTTON_ACTOIN = true;
-        //     x0 = -1;
-        //     dX = 0;
-        //     // console.dir(document.querySelector('.button'));
-        //     // console.log(BUTTON_ACTOIN);
-        // }
-        
-        document.querySelector('.container').addEventListener('mousedown', e => {
-            BUTTON_ACTOIN = true;
-            x0 = e.pageX - document.querySelector('.container').offsetLeft;
-            w0 = document.querySelector('.container').offsetWidth;
-            if (x0 < b0) x0 = b0;
-            else if (x0 > w0-b0) x0 = w0-b0;
-            SetButtonPos(x0-b0, 100, 0);
-            
-            console.dir(x0);
+        var range = {
+            el: '.range',
+            active: false,
+            mX: -1,
+            w0: -1,
+            b0: -1,
+            SetPosition(left, maxValue, minValue)
+            {
+                if (left < this.b0) left = this.b0;
+                else if (left > this.w0-this.b0) left = this.w0-this.b0;
+                left -= this.b0;
+                document.querySelector(this.el + ' .button').style.left = left + 'px';
+                return document.querySelector(this.el + ' .button_text').innerText = Math.ceil(left / (this.w0 - 2*this.b0) * (maxValue-minValue) + minValue);
+            }
+        };
+      
+        document.querySelector(range.el).addEventListener('mousedown', e => {
+            range.active = true;
+            range.mX = e.pageX - document.querySelector(range.el).offsetLeft;
+            range.w0 = document.querySelector(range.el).offsetWidth;
+            range.b0 = document.querySelector(range.el + ' .button').offsetWidth/2;
         });
       
         document.addEventListener('mouseup', () => {
-            if (BUTTON_ACTOIN)
-            {
-                BUTTON_ACTOIN = false;
-                // console.log(BUTTON_ACTOIN);
-            }
+            if (range.active) range.active = false;
         });
 
         document.addEventListener('mousemove', e => {
-            if (BUTTON_ACTOIN)
+            if (range.active)
             {
-                
-                if (x0 < b0) x0 = b0;
-                else if (x0 > w0-b0) x0 = w0-b0;
-                SetButtonPos(x0-b0, 100, 0);
-                x0 = e.pageX - document.querySelector('.container').offsetLeft;
+                range.SetPosition(range.mX, 100, 0);
+                range.mX = e.pageX - document.querySelector(range.el).offsetLeft;
             }
         });
         
-        function SetButtonPos(pos, max = 100, min = 0)
-        {
-            // let w0 = document.querySelector('.container').offsetWidth - document.querySelector('.button').offsetWidth;
-            document.querySelector('.button').style.left = pos + 'px';
-            document.querySelector('.button_info').innerText = Math.ceil(pos / (w0-2*b0) * (max-min) + min)
-        }
-        window.onload = function()
-        {
-            w0 = document.querySelector('.container').offsetWidth;
-            b0 = document.querySelector('.button').offsetWidth/2;
-            SetButtonPos(195, 100, 0);
-        }
+        // window.onload = function()
+        // {
+        //     // w0 = document.querySelector('.container').offsetWidth;
+            
+        //     // SetButtonPos(195, 100, 0);
+        // }
     </script>
 </body>
 </html>
