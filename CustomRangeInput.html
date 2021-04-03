@@ -6,7 +6,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
         BODY {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
 
             padding-top: 50px;
@@ -18,95 +18,66 @@
             font-weight: 500;
             color: rgba(255, 255, 255, 0.5);
         }
-        .range {
+        #range1 {
             height: 18px;
             width: 400px;
-            position: relative;
-            user-select: none;
-            display: flex;
-            align-items: center;
         }
-        .range .band {
-            position: absolute;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.25);
+        #range2 {
+            height: 30px;
+            width: 500px;
         }
-        .range .button  {
-            position: relative;
-            width: 10px;
-            left: 0;
-            height: 100%;
-            background: #FFFF00;
-            box-shadow: 0px 0px 4px #FFFF00;
-            cursor: pointer;
-
-            display: flex;
-            justify-content: center;
-        }
-        .range .button_text {
-            position: absolute;
-            top: 110%;
+        #range3 {
+            height: 20px;
+            width: 300px;
+            background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+            border-radius: 5px;
+            margin-right: 10px;
         }
     </style>
+    
 </head>
 <body>
-    <span style="margin-right: 10px;">Younger</span>
+    <span style="margin-bottom: 10px; color: white; font-size: larger;">Custom ranges</span>
 
-    <!-- RANGE START -->
-    <div class="range">
-        <div class="band"></div>
-        <div class="button">
-            <span class="button_text">0</span>
-        </div>
+    <div id="range1"></div>
+    <br><br>
+    <div id="range2"></div>
+    <br><br>
+    
+    <div style="display: flex; align-items: center;">
+        <div id="range3"></div>
+        <span id="range3-text" style="width:20px;"></span>
     </div>
-    <!-- RANGE END -->
 
-    <span style="margin-left: 10px;">Older</span>
-
-
+    <script src="Range.js"></script>
     <script>
-        var range = {
-            el: '.range',
-            active: false,
-            mX: -1,
-            w0: -1,
-            b0: -1,
-            SetPosition(left, maxValue, minValue)
-            {
-                if (left < this.b0) left = this.b0;
-                else if (left > this.w0-this.b0) left = this.w0-this.b0;
-                left -= this.b0;
-                document.querySelector(this.el + ' .button').style.left = left + 'px';
-                return document.querySelector(this.el + ' .button_text').innerText = Math.ceil(left / (this.w0 - 2*this.b0) * (maxValue-minValue) + minValue);
-            }
-        };
-      
-        document.querySelector(range.el).addEventListener('mousedown', e => {
-            range.active = true;
-            range.mX = e.pageX - document.querySelector(range.el).offsetLeft;
-            range.w0 = document.querySelector(range.el).offsetWidth;
-            range.b0 = document.querySelector(range.el + ' .button').offsetWidth/2;
-        });
-      
-        document.addEventListener('mouseup', () => {
-            if (range.active) range.active = false;
-        });
-
-        document.addEventListener('mousemove', e => {
-            if (range.active)
-            {
-                range.SetPosition(range.mX, 100, 0);
-                range.mX = e.pageX - document.querySelector(range.el).offsetLeft;
-            }
-        });
-        
-        // window.onload = function()
-        // {
-        //     // w0 = document.querySelector('.container').offsetWidth;
-            
-        //     // SetButtonPos(195, 100, 0);
-        // }
+        let r1, r2, r3;
+        window.onload = () =>
+        {
+            r1 = new Range({
+                el: '#range1',
+            });
+            r2 = new Range({
+                el: '#range2',
+                bandColor: 'green',
+                buttonColor: 'lime',
+                bandHeight: 6,
+                minValue: 0,
+                maxValue: 1000,
+                value: 777,
+                valueColor: 'lime',
+            });
+            r3 = new Range({
+                el: '#range3',
+                bandColor: 'transparent',
+                buttonColor: 'white',
+                bandHeight: 20,
+                minValue: 0,
+                maxValue: 10,
+                value: 5,
+                hideValue: true,
+            });
+        }
     </script>
 </body>
 </html>
