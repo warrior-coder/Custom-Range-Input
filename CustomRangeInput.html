@@ -9,7 +9,7 @@
             flex-direction: column;
             align-items: center;
 
-            padding-top: 50px;
+            padding-top: 45px;
             background: #242124;
 
             font-family: 'Roboto', sans-serif;
@@ -33,25 +33,44 @@
             border-radius: 5px;
             margin-right: 10px;
         }
+        #range4 {
+            height: 15px;
+            width: 150px;
+        }
+        #range5 {
+            height: 15px;
+            width: 150px;
+        }
+        #range6 {
+            height: 15px;
+            width: 150px;
+        }
     </style>
     
 </head>
 <body>
-    <span style="margin-bottom: 10px; color: white; font-size: larger;">Custom ranges</span>
+    <span style="margin-bottom: 15px; color: white; font-size: larger;">Custom ranges</span>
 
     <div id="range1"></div>
     <br><br>
+
     <div id="range2"></div>
     <br><br>
-    
+
     <div style="display: flex; align-items: center;">
         <div id="range3"></div>
         <span id="range3-text" style="width:20px;"></span>
     </div>
+    <br><br>
+
+    <div id="range4"></div><br>
+    <div id="range5"></div><br>
+    <div id="range6"></div><br>
+    <br><br>
 
     <script src="Range.js"></script>
     <script>
-        let r1, r2, r3;
+        let r1, r2, r3, r4, r5, r6;
         window.onload = () =>
         {
             r1 = new Range({
@@ -71,10 +90,35 @@
                 el: '#range3',
                 bandColor: 'transparent',
                 buttonColor: 'white',
+                buttonWidth: 30,
                 bandHeight: 20,
                 minValue: 0,
-                maxValue: 10,
+                maxValue: 9,
                 value: 5,
+                hideValue: true,
+            });
+            r4 = new Range({
+                el: '#range4',
+                bandColor: 'white',
+                buttonColor: 'royalblue',
+                value: 50,
+                fill: 'royalblue',
+                hideValue: true,
+            });
+            r5 = new Range({
+                el: '#range5',
+                bandColor: 'white',
+                buttonColor: 'royalblue',
+                value: 75,
+                fill: 'royalblue',
+                hideValue: true,
+            });
+            r6 = new Range({
+                el: '#range6',
+                bandColor: 'white',
+                buttonColor: 'royalblue',
+                value: 25,
+                fill: 'royalblue',
                 hideValue: true,
             });
         }
