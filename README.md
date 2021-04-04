@@ -1,5 +1,5 @@
 # Custom Ranges
-![examles](examples.PNG)
+![examles](examples.png)
 Range.js is a simple JavaScript libruary that gives you possibility to easily create you own different range inputs and add them to your webpage.
 
 ## Getting started
